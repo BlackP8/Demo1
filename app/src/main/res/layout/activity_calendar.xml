@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_color"
+    android:orientation="vertical"
+    tools:context=".CalendarActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose your date"
+            android:textSize="23sp"
+            android:textColor="@android:color/black"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginTop="120dp"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:orientation="vertical"
+        android:background="@drawable/edittext_background">
+        
+        <CalendarView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/calendar_view"
+            android:layout_margin="5dp"
+            android:selectedWeekBackgroundColor="#6E7BDA">
+        </CalendarView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_margin="10dp"
+            android:gravity="center">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_save_date"
+            android:layout_centerInParent="true"
+            android:text="Save date"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textStyle="bold"
+            android:background="@drawable/button_background"/>
+
+    </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_margin="10dp"
+            android:gravity="center">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_cancel_date"
+                android:layout_centerInParent="true"
+                android:text="Cancel"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textStyle="bold"
+                android:background="@drawable/button_background"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+</LinearLayout>
