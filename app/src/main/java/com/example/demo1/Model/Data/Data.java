@@ -1,17 +1,17 @@
-package com.example.demo1.Data;
+package com.example.demo1.Model.Data;
 
 public class Data {
     private int amount;
     private String type;
     private String note;
-    private String id;
+//    private String id;
     private String date;
 
-    public Data(int amount, String type, String note, String id, String date) {
+    public Data(int amount, String type, String note, String date) {
         this.amount = amount;
         this.type = type;
         this.note = note;
-        this.id = id;
+//        this.id = id;
         this.date = date;
     }
 
@@ -37,14 +37,6 @@ public class Data {
 
     public void setNote(String note) {
         this.note = note;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getDate() {

@@ -1,13 +1,15 @@
-package com.example.demo1.Data;
+package com.example.demo1.Model;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.content.Intent;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
-import androidx.fragment.app.DialogFragment;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,19 +18,21 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-import com.example.demo1.CalendarActivity;
-import com.example.demo1.HomeActivity;
+import com.example.demo1.Model.Data.Data;
+import com.example.demo1.Model.Data.DbOperations;
+import com.example.demo1.Model.Data.MyConstants;
+import com.example.demo1.Model.Data.MyDbHelper;
 import com.example.demo1.R;
-import com.example.demo1.ui.Login.LoginActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class DashboardFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
+import java.util.ArrayList;
+import java.util.List;
 
-    DatePickerDialog.OnDateSetListener setListener;
+public class DashboardFragment extends Fragment  {
 
     //Активная кнопка
     private FloatingActionButton float_main_btn;
@@ -38,33 +42,55 @@ public class DashboardFragment extends Fragment implements DatePickerDialog.OnDa
     //Текст кнопки
     private TextView float_income_txt;
     private TextView float_expense_txt;
-
     private boolean isOpen = false;
 
     //Анимация кнопки
     private Animation fadOpen, fadClose;
 
-//    //Recycler
-//    private RecyclerView recyclerIncome;
-//    private RecyclerView recyclerExpense;
+    private SQLiteDatabase database;
+    private MyDbHelper helper;
+
+    //Recycler
+    private RecyclerAdapter recyclerAdapter;
+    private RecyclerView recyclerIncome;
+    private Context context;
+    private DbOperations dbOperations;
+//    private Cursor cursor;
+    List<Data> values = new ArrayList<>();
+    LayoutInflater inflater;
+//  private RecyclerView recyclerExpense;
+
+    public DashboardFragment() {
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View myview = inflater.inflate(R.layout.fragment_dashboard, container, false);
-
+        View myView = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        context = myView.getContext();
+        helper = new MyDbHelper(myView.getContext());
+        dbOperations = new DbOperations(context);
+        dbOperations.openDb();
+        //Присоединяем историю операций
+        recyclerIncome = myView.findViewById(R.id.rlr_dash_income);
+        recyclerIncome.setHasFixedSize(true);
+;
         //Привязываем активную кнопку к экрану
-        float_main_btn = myview.findViewById(R.id.float_main_btn);
-        float_income_btn = myview.findViewById(R.id.income_float_btn);
-        float_expense_btn = myview.findViewById(R.id.expense_float_btn);
+        float_main_btn = myView.findViewById(R.id.float_main_btn);
+        float_income_btn = myView.findViewById(R.id.income_float_btn);
+        float_expense_btn = myView.findViewById(R.id.expense_float_btn);
 
         //Привязываем текст кнопки
-        float_income_txt = myview.findViewById(R.id.income_text);
-        float_expense_txt = myview.findViewById(R.id.expense_text);
+        float_income_txt = myView.findViewById(R.id.income_text);
+        float_expense_txt = myView.findViewById(R.id.expense_text);
 
-//        //Присоединяем историю операций
-//        recyclerIncome = myview.findViewById(R.id.rlr_dash_income);
 //        recyclerExpense = myview.findViewById(R.id.rlr_dash_expense);
 
         //Присоединяем анимацию
@@ -81,24 +107,30 @@ public class DashboardFragment extends Fragment implements DatePickerDialog.OnDa
             }
         });
 
+
         //Прописываем логику отображения истории операций
-        LinearLayoutManager layoutManagerIncome = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+////        database = helper.getWritableDatabase();
+        LinearLayoutManager layoutManagerIncome = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         layoutManagerIncome.setStackFromEnd(true);
         layoutManagerIncome.setReverseLayout(true);
-//        recyclerIncome.setHasFixedSize(true);
-//        recyclerIncome.setLayoutManager(layoutManagerIncome);
+        recyclerIncome.setLayoutManager(layoutManagerIncome);
+//        recyclerAdapter = new RecyclerAdapter(values = new ArrayList<>(), myView.getContext());
+        recyclerAdapter = new RecyclerAdapter(dbOperations.getFromDb());
+        recyclerIncome.setAdapter(recyclerAdapter);
 
-        LinearLayoutManager layoutManagerExpense = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        layoutManagerExpense.setStackFromEnd(true);
-        layoutManagerExpense.setReverseLayout(true);
+//        LinearLayoutManager layoutManagerExpense = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+//        layoutManagerExpense.setStackFromEnd(true);
+//        layoutManagerExpense.setReverseLayout(true);
 //        recyclerExpense.setHasFixedSize(true);
 //        recyclerExpense.setLayoutManager(layoutManagerIncome);
 
-        return myview;
+        return myView;
     }
 
     @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+    public void onStart() {
+        super.onStart();
+
 
     }
 
@@ -136,7 +168,7 @@ public class DashboardFragment extends Fragment implements DatePickerDialog.OnDa
         float_income_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                incomeDataInput ();
+                incomeDataInput();
             }
         });
 
@@ -147,36 +179,6 @@ public class DashboardFragment extends Fragment implements DatePickerDialog.OnDa
                 expenseDataInput();
             }
         });
-    }
-
-    private void calendarCall() {
-        //Создаем диалоговое окно
-        AlertDialog.Builder mydialog = new AlertDialog.Builder(getActivity());
-
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
-        //Создаем объект вида нашего окна
-        View myview = inflater.inflate(R.layout.activity_calendar, null);
-
-        mydialog.setView(myview);
-        final AlertDialog dialog = mydialog.create();
-
-        //Если нажать на пространство вне окна, оно закроется
-        dialog.setCancelable(false);
-
-        //Задаем кнопки окна
-        Button btnSave_date = myview.findViewById(R.id.btn_save_date);
-        Button btnCancel_date = myview.findViewById(R.id.btn_cancel_date);
-
-
-
-        btnCancel_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
     }
 
     public void incomeDataInput () {
@@ -203,13 +205,6 @@ public class DashboardFragment extends Fragment implements DatePickerDialog.OnDa
         Button btnSave = myview.findViewById(R.id.btn_save);
         Button btnCancel = myview.findViewById(R.id.btn_cancel);
 
-        date_ed.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                calendarCall();
-            }
-        });
-
         //Создаем обработчик событий для кнопки сохранить
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,6 +214,8 @@ public class DashboardFragment extends Fragment implements DatePickerDialog.OnDa
                 String amount = amount_ed.getText().toString().trim();
                 String note = note_ed.getText().toString().trim();
                 String date = date_ed.getText().toString().trim();
+
+                int amount_digit = Integer.parseInt(amount);
 
                 //Проверка ввода для полей
                 if (TextUtils.isEmpty(date)) {
@@ -236,12 +233,13 @@ public class DashboardFragment extends Fragment implements DatePickerDialog.OnDa
                     return;
                 }
 
-                int amount_int = Integer.parseInt(amount);
-
-                if (TextUtils.isEmpty(note)) {
-                    note_ed.setError("Вы ничего не ввели!");
-                    return;
-                }
+               dbOperations.insertDb(values,amount_digit, type, note, date);
+                recyclerAdapter.notifyDataSetChanged();
+                dialog.dismiss();
+//                if (TextUtils.isEmpty(note)) {
+//                    note_ed.setError("Вы ничего не ввели!");
+//                    return;
+//                }
 
                 floatBtnAnimation();
             }
@@ -287,7 +285,7 @@ public class DashboardFragment extends Fragment implements DatePickerDialog.OnDa
         date_ed.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                calendarCall();
+//                calendarCall(date_ed);
             }
         });
 

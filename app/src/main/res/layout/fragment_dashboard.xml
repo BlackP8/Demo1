@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Data.DashboardFragment"
+    tools:context=".Model.DashboardFragment"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -116,7 +116,7 @@
                 
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="150dp"
                     android:id="@+id/rlr_dash_income"/>
 
 
@@ -129,7 +129,7 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="150dp"
                     android:id="@+id/rlr_dash_expense"/>
 
             </LinearLayout>

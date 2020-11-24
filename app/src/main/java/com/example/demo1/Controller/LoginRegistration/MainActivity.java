@@ -1,11 +1,12 @@
-package com.example.demo1;
+package com.example.demo1.Controller.LoginRegistration;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.demo1.ui.Login.LoginActivity;
+import com.example.demo1.Controller.LoginRegistration.LoginActivity;
+import com.example.demo1.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,8 +16,4 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
     }
-
-    /*<activity
-    android:name=".LoginActivity"
-    android:label="@string/title_activity_login" />*/
 }

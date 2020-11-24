@@ -1,4 +1,4 @@
-package com.example.demo1.Data;
+package com.example.demo1.Model;
 
 import android.app.AlertDialog;
 import android.os.Bundle;

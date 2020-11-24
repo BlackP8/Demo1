@@ -1,4 +1,4 @@
-package com.example.demo1.ui.Login;
+package com.example.demo1.Controller.LoginRegistration;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,10 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.demo1.HomeActivity;
 import com.example.demo1.R;
-import com.example.demo1.RegistrationActivity;
-import com.example.demo1.ResetPassActivity;
 
 public class LoginActivity extends AppCompatActivity {
 

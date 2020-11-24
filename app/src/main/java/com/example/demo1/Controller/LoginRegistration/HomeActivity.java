@@ -1,4 +1,4 @@
-package com.example.demo1;
+package com.example.demo1.Controller.LoginRegistration;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -8,14 +8,22 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 
-import com.example.demo1.Data.DashboardFragment;
-import com.example.demo1.Data.ExpenseFragment;
-import com.example.demo1.Data.IncomeFragment;
+import com.example.demo1.Model.DashboardFragment;
+import com.example.demo1.Model.Data.DbOperations;
+import com.example.demo1.Model.Data.MyDbHelper;
+import com.example.demo1.Model.ExpenseFragment;
+import com.example.demo1.Model.IncomeFragment;
+import com.example.demo1.Model.RecyclerAdapter;
+import com.example.demo1.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -29,6 +37,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private IncomeFragment incomeFragment;
     private ExpenseFragment expenseFragment;
 
+//    private SQLiteDatabase database;
+//    private MyDbHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +52,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         bottomNavigationView = findViewById(R.id.bottom_navigation_bar);
         frameLayout = findViewById(R.id.main_frame);
 
+        //Инициализируем боковое меню
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close);
@@ -81,7 +91,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-
     }
 
 
@@ -102,6 +111,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
+
 
     public void displaySelectedListener(int itemId) {
         Fragment fragment = null;
@@ -130,6 +140,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         drawerLayout.closeDrawer((GravityCompat.START));
     }
+
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

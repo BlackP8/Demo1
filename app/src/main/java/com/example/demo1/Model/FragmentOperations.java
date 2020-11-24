@@ -1,4 +1,4 @@
-package com.example.demo1.Data;
+package com.example.demo1.Model;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -51,37 +51,38 @@ public class FragmentOperations {
     }
 
 
-    //Создаем отедльный класс для хранения значений полей окна операции
-    private static class MyViewHolder extends RecyclerView.ViewHolder {
-        View mView;
 
-        public MyViewHolder(@NonNull View itemView) {
+    //Создаем отедльный класс для хранения значений полей окна операции
+    public static class IncomeViewHolder extends RecyclerView.ViewHolder {
+        View mIncomeView;
+
+        public IncomeViewHolder(@NonNull View itemView) {
             super(itemView);
-            mView = itemView;
+            mIncomeView = itemView;
         }
 
         //Устанавливаем тип операции
         private void setType (String type) {
-            TextView type_data = mView.findViewById(R.id.type_txt_expense);
+            TextView type_data = mIncomeView.findViewById(R.id.type_income_dash);
             type_data.setText(type);
         }
 
         //Устанвливаем заметку
         private void setNote (String note) {
-            TextView note_data = mView.findViewById(R.id.note_txt_expense);
+            TextView note_data = mIncomeView.findViewById(R.id.note_income_dash);
             note_data.setText(note);
         }
 
         //Устанавливаем дату
         private void setDate (String date) {
-            TextView date_data = mView.findViewById(R.id.date_txt_expense);
+            TextView date_data = mIncomeView.findViewById(R.id.date_income_dash);
             date_data.setText(date);
         }
 
         private void setAmount (int amount) {
-            TextView amount_data = mView.findViewById(R.id.amount_txt_expense);
-            String strammount = String.valueOf(amount);
-            amount_data.setText(strammount);
+            TextView amount_data = mIncomeView.findViewById(R.id.amount_income_dash);
+            String strAmount = String.valueOf(amount);
+            amount_data.setText(strAmount);
         }
     }
 
